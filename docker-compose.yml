@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: php-tdd
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - php-tdd
+  ngix:
+    image: nginx:alpine
+    ports:
+      - 8888:80
+    volumes:
+      - ./:/var/www
+      - ./docker/ngix/:/etc/nginx/conf.d/
+    networks:
+      - php-tdd
+
+networks:
+  php-tdd:
+    driver: bridge
